@@ -48,7 +48,7 @@
           
           console.log(output);
           
-          for (var d = dates.from; d < dates.to; d.setDate(d.getDate() + 1)) {
+          for (var d = dates.from; d == dates.to; d.setDate(d.getDate() + 1)) {
             var dauDate =  moment(d).format('YYYY-MM-DD')
             
             var mauStartDate =  new Date();
