@@ -64,24 +64,17 @@
             // console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
             // console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
             
-            var dauParams = $.extend({}, {
+            var $dau = MP.api.segment(eventName, {
               'type': 'unique',
               'to': dauDate,
               'from':  dauDate,
-              'interval': 1
-            });
-            var mauParams = $.extend({}, {
+              'interval': 1});
+            var $mau = MP.api.segment(eventName, {
               'type': 'unique',
               'to':  moment(mauEndDate).format('YYYY-MM-DD'),
               'from': moment(mauStartDate).format('YYYY-MM-DD'),
-              'interval': 30
-            });
-            
-            console.log(dauParams);
-            console.log(mauParams);
-            
-            var $dau = MP.api.segment(eventName, dauParams);
-            var $mau = MP.api.segment(eventName, mauParams);
+              'interval': 30});
+              
             // Wait until the segmentation queries finish
             $.when($dau, $mau).done(function(dau, mau) {
               var dauQuery = dau.values()[eventName];
