@@ -52,17 +52,17 @@
             var mauStartDate =  new Date();
             mauStartDate.setDate(d.getDate()-31);
             
-            console.log("WHAT "+ (d.getDate()-31));
+            //console.log("WHAT "+ (d.getDate()-31));
             
             var mauEndDate =  new Date();
             mauEndDate.setDate(d.getDate()-1);
             
-            console.log(d);
+            // console.log(d);
             
-            console.log("START!")
-            console.log("DAU DATE = " + dauDate);
-            console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
-            console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
+            // console.log("START!")
+            // console.log("DAU DATE = " + dauDate);
+            // console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
+            // console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
             
             var dauParams = $.extend({}, {
               'type': 'unique',
@@ -83,10 +83,8 @@
             $.when($dau, $mau).done(function(dau, mau) {
               var dauQuery = dau.values()[eventName];
               var mauQuery = mau.values()[eventName];
-              debugger;
-              
+
               if (dauQuery) {
-                debugger;
                 // Calculating MAU
                 var sum = 0;
                 _.each(_.keys(mauQuery), function(dates){
@@ -98,14 +96,14 @@
                 // Calculating DAU over MAU
                 value = dauQuery[dauDate];
                 finalOutput["Top 10 Events"][dauDate] = value/sum;
-                //console.log(finalOutput);
+                console.log(dauDate + " : " + finalOutput);
               } else {
-                debugger;
                 finalOutput["Top 10 Events"][dauDate] = 0;
-                //console.log(finalOutput);
+                console.log(dauDate + " : " + finalOutput);
               };
               
               if (d == dates.to) {
+                debugger;
                 // Log and graph results
                 console.log("Final " + finalOutput)
                 eventGraph.MPChart('setData', finalOutput);
