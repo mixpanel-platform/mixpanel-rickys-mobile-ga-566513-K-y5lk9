@@ -37,13 +37,12 @@
         var runQuery = function() {
           //obtain event, property, and date range 
           var dateRange = dateSelect.MPDatepicker('value'),
-              eventName = 'App Open';
+              eventName = 'App Open',
+              dates = getDates();
           
           $('#graph').empty();
           
           var output["Top 10 Events"] = {};
-          
-          var dates = getDates();
           
           console.log(output);
           
