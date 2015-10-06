@@ -67,7 +67,7 @@
             var dauParams = $.extend({}, {
               'from': dauDate,
               'to':  dauDate,
-              'interval': 1,
+              'unit': 'day',
               'type': 'unique'
             });
             var mauParams = $.extend({}, {
@@ -77,8 +77,8 @@
               'type': 'unique'
             });
 
-            var $dau = MP.api.segment(eventName, dauParams);
             var $mau = MP.api.segment(eventName, mauParams);
+            var $dau = MP.api.segment(eventName, dauParams);
               
             // Wait until the segmentation queries finish
             $.when($dau, $mau).done(function(dau, mau) {
