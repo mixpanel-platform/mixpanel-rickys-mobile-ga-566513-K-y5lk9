@@ -104,13 +104,17 @@
                 output["Top 10 Events"][dauDate] = 0;
                 //console.log(output);
               };
-            
+              
+              if (d == dates.to) {
+                // Log and graph results
+                console.log("Final " + output)
+                eventGraph.MPChart('setData', output);
+              };
+              
             });
           };
               
-          // Log and graph results
-          console.log("Final " + output)
-          eventGraph.MPChart('setData', output);
+          
         };
         //actions when dropdowns change
         dateSelect.on('change', runQuery);
