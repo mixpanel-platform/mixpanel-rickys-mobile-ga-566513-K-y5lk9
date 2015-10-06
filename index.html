@@ -97,9 +97,11 @@
                 value = dauQuery[dauDate];
                 finalOutput["Top 10"][dauDate] = value/sum;
                 console.log(dauDate + " : " + finalOutput);
+                debugger;
               } else {
                 finalOutput["Top 10"][dauDate] = 0;
                 console.log(dauDate + " : " + finalOutput);
+                debugger;
               };
               
               if (d == dates.to) {
