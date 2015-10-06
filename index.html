@@ -65,10 +65,10 @@
             console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
             
             var dauParams = $.extend({}, {
-              'from': dauDate,
-              'to':  dauDate,
-              'unit': 'day',
-              'type': 'unique'
+              'type': 'unique',
+              'to_date': dauDate,
+              'from_date':  dauDate,
+              'interval': 1
             });
             var mauParams = $.extend({}, {
               'from': moment(mauStartDate).format('YYYY-MM-DD'),
