@@ -39,12 +39,12 @@
           var dateRange = dateSelect.MPDatepicker('value'),
               eventName = 'App Open',
               dates = getDates(),
-              output = {};
+              finalOutput = {};
           
           $('#graph').empty();
           
-          output["Top 10 Events"] = {};
-          console.log(output);
+          finalOutput["Top 10 Events"] = {};
+          console.log(finalOutput);
           
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
             var dauDate =  moment(d).format('YYYY-MM-DD')
@@ -97,17 +97,17 @@
                 
                 // Calculating DAU over MAU
                 value = dauQuery[dauDate];
-                output["Top 10 Events"][dauDate] = value/sum;
-                //console.log(output);
+                finalOutput["Top 10 Events"][dauDate] = value/sum;
+                //console.log(finalOutput);
               } else {
-                output["Top 10 Events"][dauDate] = 0;
-                //console.log(output);
+                finalOutput["Top 10 Events"][dauDate] = 0;
+                //console.log(finalOutput);
               };
               
               if (d == dates.to) {
                 // Log and graph results
-                console.log("Final " + output)
-                eventGraph.MPChart('setData', output);
+                console.log("Final " + finalOutput)
+                eventGraph.MPChart('setData', finalOutput);
               };
               
             });
