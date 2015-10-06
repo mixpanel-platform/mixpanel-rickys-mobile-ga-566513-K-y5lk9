@@ -95,10 +95,10 @@
                 
                 // Calculating DAU over MAU
                 value = dauQuery[dauDate];
-                finalOutput["Top 10 Events"][dauDate] = value/sum;
+                finalOutput["Top 10"][dauDate] = value/sum;
                 console.log(dauDate + " : " + finalOutput);
               } else {
-                finalOutput["Top 10 Events"][dauDate] = 0;
+                finalOutput["Top 10"][dauDate] = 0;
                 console.log(dauDate + " : " + finalOutput);
               };
               
