@@ -1,15 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
+    <div class="mixpanel-platform-section">
+      <div class="titles">
+        <h1 style="font-size: 18px; color: rgb(95,105,131)">Daily Active Users Over Time Period for Top 10 Events</h1>
+        <p style="font-size: 14px; color: rgb(95,105,131)">Select Date Range</p>
+        <div style="clear: both;"></div>
+      </div>
+      <div class="selectors">
+        <div id="dateSelect" style="float: left;"></div>
+        <div style="clear: both;"></div>
+      </div>
+      <div id="graph"></div>
+    </div>
     <script>
-      // Run queries and display results here
+      MP.api.ready(function() {
+        var eventGraph  = $('#graph').MPChart({chartType: 'line'});
+        var dateSelect  = $('#dateSelect').MPDatepicker();
+        
+        //convenience method for grabbing that datepicker value
+        getDates = function() {
+          return dateSelect.MPDatepicker('value')
+        }
+
+        //find interval for bar chart 'interval' param
+        getInterval = function(dates) {
+          intervalDays = Math.ceil((dates.to - dates.from) / (24 * 60 * 60 * 1000)) + 1
+          return intervalDays
+        }
+        
+        var runQuery = function() {
+          //obtain event, property, and date range 
+          var dateRange = dateSelect.MPDatepicker('value'),
+              eventName = 'App Open';
+          
+          $('#graph').empty();
+          
+          var output = {};
+          output["Top 10 Events"] = {};
+          
+          var dates = getDates();
+          
+          console.log(output);
+          
+          for (var d = dates.from; d < dates.to; d.setDate(d.getDate() + 1)) {
+            var dauDate =  moment(d).format('YYYY-MM-DD')
+            
+            var mauStartDate =  new Date();
+            mauStartDate.setDate(d.getDate()-31);
+            
+            var mauEndDate =  new Date();
+            mauEndDate.setDate(d.getDate()-1);
+            
+            console.log(d);
+            
+            console.log("START!")
+            console.log("DAU DATE = " + dauDate);
+            console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
+            console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
+            
+            var dauParams = $.extend({}, {
+              'from': dauDate,
+              'to':  dauDate,
+              'interval': 1,
+              'type': 'unique'
+            });
+            var mauParams = $.extend({}, {
+              'from': moment(mauStartDate).format('YYYY-MM-DD'),
+              'to':  moment(mauEndDate).format('YYYY-MM-DD'),
+              'interval': 30,
+              'type': 'unique'
+            });
+
+            var $dau = MP.api.segment(eventName, dauParams);
+            var $mau = MP.api.segment(eventName, mauParams);
+              
+            // Wait until the segmentation queries finish
+            $.when($dau, $mau).done(function(dau, mau) {
+              var dauQuery = dau.values()[eventName];
+              var mauQuery = mau.values()[eventName];
+              
+              if (dauQuery) {
+                // Calculating MAU
+                var sum = 0;
+                _.each(_.keys(mauQuery), function(dates){
+                  var values = mauQuery[dates];
+                  sum = sum + values;
+                });
+                if (sum == 0) {sum = 1}; 
+                
+                // Calculating DAU over MAU
+                value = dauQuery[dauDate];
+                output["Top 10 Events"][dauDate] = value/sum;
+                //console.log(output);
+              } else {
+                output["Top 10 Events"][dauDate] = 0;
+                //console.log(output);
+              };
+            
+            });
+          };
+              
+          // Log and graph results
+          console.log("Final " + output)
+          eventGraph.MPChart('setData', output);
+        };
+        //actions when dropdowns change
+        dateSelect.on('change', runQuery);
+      });
     </script>
+    
   </body>
 </html>
