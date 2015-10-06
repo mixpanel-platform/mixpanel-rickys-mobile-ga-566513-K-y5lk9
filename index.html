@@ -66,20 +66,19 @@
             
             var dauParams = $.extend({}, {
               'type': 'unique',
-              'to_date': dauDate,
-              'from_date':  dauDate,
+              'to': dauDate,
+              'from':  dauDate,
               'interval': 1
             });
             var mauParams = $.extend({}, {
-              'from': moment(mauStartDate).format('YYYY-MM-DD'),
+              'type': 'unique',
               'to':  moment(mauEndDate).format('YYYY-MM-DD'),
-              'interval': 30,
-              'type': 'unique'
+              'from': moment(mauStartDate).format('YYYY-MM-DD'),
+              'interval': 30
             });
-
-            var $mau = MP.api.segment(eventName, mauParams);
+            
             var $dau = MP.api.segment(eventName, dauParams);
-              
+            var $mau = MP.api.segment(eventName, mauParams);
             // Wait until the segmentation queries finish
             $.when($dau, $mau).done(function(dau, mau) {
               var dauQuery = dau.values()[eventName];
@@ -87,6 +86,7 @@
               debugger;
               
               if (dauQuery) {
+                debugger;
                 // Calculating MAU
                 var sum = 0;
                 _.each(_.keys(mauQuery), function(dates){
