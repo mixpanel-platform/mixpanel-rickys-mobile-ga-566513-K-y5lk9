@@ -77,6 +77,9 @@
               'interval': 30
             });
             
+            console.log(dauParams);
+            console.log(mauParams);
+            
             var $dau = MP.api.segment(eventName, dauParams);
             var $mau = MP.api.segment(eventName, mauParams);
             // Wait until the segmentation queries finish
