@@ -101,56 +101,29 @@
             // Calculate DAU over MAU
             var dauResults = dauOutput[eventName];
             var mauResults = mauOutput[eventName];
-            
-            debugger;
+            var finalOutput = {};
             
             if (dauQuery) {
-              for (i=0; i<Object.keys(dauResults).length, i++) {
-                for (j=0; j<Object.keys(dauResults).length, j++) {
-                  
+              _.each(_.keys(dauResults), function(date){
+                var dauValue = dauQuery[date];
+                var mauValue = dauQuery[date];
+                finalOutput["Top 10"][date] = dauValue/mauValue;
                 
-                }  
-              }
-            console.log(dauOutput);
-            console.log(mauOutput);
+                console.log(dauValue);
+                console.log(mauValue);
+                console.log(finalOutput);
+              });
+            } else {
+              _.each(_.keys(mauResults), function(date){
+                finalOutput["Top 10"][date] = 0;
+              });
+            };
+            // Log and graph results
+            // console.log("Final " + finalOutput)
+            // eventGraph.MPChart('setData', finalOutput);    
+            // console.log(dauOutput);
+            // console.log(mauOutput);
           });
-            
-          // // Wait until the segmentation queries finish
-          // $.when($dau, $mau).done(function(dau, mau) {
-          //   var dauQuery = dau.values()[eventName];
-          //   //var mauQuery = mau.values()[eventName];
-            
-          //   if (dauQuery) {
-          //     // Calculating MAU
-          //     var sum = 0;
-          //     _.each(_.keys(mauQuery), function(dates){
-          //       var values = mauQuery[dates];
-          //       sum = sum + values;
-          //     });
-          //     if (sum == 0) {sum = 1}; 
-              
-          //     // Calculating DAU over MAU
-          //     value = dauQuery[dauDate];
-          //     finalOutput["Top 10"][dauDate] = value/sum;
-          //     // console.log(d);
-          //     // console.log(dauDate);
-          //     // console.log(finalOutput);
-          //   } else {
-          //     finalOutput["Top 10"][dauDate] = 0;
-          //     // console.log(d);
-          //     // console.log(dauDate);
-          //     // console.log(finalOutput);
-          //   };
-            
-          //   if (d == dates.to) {
-          //     debugger;
-          //     // Log and graph results
-          //     console.log("Final " + finalOutput)
-          //     eventGraph.MPChart('setData', finalOutput);
-          //   };
-          // });
-              
-              
         };
         //actions when dropdowns change
         dateSelect.on('change', runQuery);
