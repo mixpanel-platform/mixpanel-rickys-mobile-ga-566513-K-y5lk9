@@ -95,7 +95,7 @@
               });
               if (sum == 0) {sum = 1};
               var finalDauDate = addOneDay(dauDate)
-              mauOutput["Top 10"][finalDauDate] = sum;
+              mauOutput[eventName][finalDauDate] = sum;
             });
           }).then(function(){
             // Calculate DAU over MAU
