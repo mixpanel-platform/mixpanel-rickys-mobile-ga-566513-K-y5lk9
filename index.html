@@ -52,7 +52,7 @@
               promisesMAU = [];
           
           $('#graph').empty();
-          mauOutput["Top 10"] = {}
+          mauOutput[eventName] = {}
           
           // Query for DAU
           var params = $.extend({}, dates, {
@@ -99,6 +99,7 @@
             });
           }).then(function(){
             // Calculate DAU over MAU
+            
             debugger;
             console.log(dauOutput);
             console.log(mauOutput);
