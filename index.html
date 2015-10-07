@@ -47,6 +47,7 @@
           var dateRange = dateSelect.MPDatepicker('value'),
               eventName = 'App Open',
               dates = getDates(),
+              dauOutput = {};
               mauOutput = {};
           
           $('#graph').empty();
@@ -60,7 +61,11 @@
               'type': 'unique',
               'unit': 'day'
           });
-          var dauOutput = MP.api.segment(eventName, params);
+          MP.api.segment(eventName, params).done(function(queryResults) {
+            dauOutput = queryResults.values();
+            console.log(dauOutput);
+          });
+            
           
           // Build a list of promises
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
@@ -70,9 +75,7 @@
             var mauEndDate =  new Date();
             mauEndDate.setDate(d.getDate()-1);
             
-            // console.log(d);
-            
-            console.log("DAU DATE = " + dauDate);
+            // console.log("DAU DATE = " + dauDate);
             // console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
             // console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
             
@@ -82,7 +85,6 @@
               'from': moment(mauStartDate).format('YYYY-MM-DD'),
               'interval': 30}));
           };
-
           
           var $mau = Promise.all(promisesMAU).then(function(promiseMauArray){
             _.each(promiseMauArray, function(data){
@@ -92,7 +94,6 @@
               var dauDate = moment(zeroDate).format('YYYY-MM-DD');
               var sum = 0;
               
-              console.log('start!')
               _.each(_.keys(mauQuery), function(dates){
                 var values = mauQuery[dates];
                 sum = sum + values;
@@ -101,10 +102,7 @@
                 };
               });
               if (sum == 0) {sum = 1};
-              console.log(dauDate);
               var finalDauDate = addOneDay(dauDate)
-              console.log(finalDauDate);
-              debugger;
               mauOutput["Top 10"][finalDauDate] = sum;
             });
           }).then(function(){
