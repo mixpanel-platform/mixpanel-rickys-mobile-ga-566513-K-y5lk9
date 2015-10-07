@@ -88,8 +88,8 @@
               _.each(_.keys(mauQuery), function(dates){
                 var values = mauQuery[dates];
                 sum = sum + values;
-                if (date > dauDate) {
-                  dauDate = date;
+                if (dates > dauDate) {
+                  dauDate = dates;
                 };
               });
               if (sum == 0) {sum = 1};
