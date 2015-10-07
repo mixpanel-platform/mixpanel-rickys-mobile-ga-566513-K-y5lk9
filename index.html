@@ -81,7 +81,7 @@
           
           var $dau = Promise.all(promisesDAU).then(function(promiseDauArray){
             _.each(promiseDauArray, function(data){
-              var dauQuery = dau.values()[eventName];
+              var dauQuery = data.values()[eventName];
               if (dauQuery) {
                 _.each(_.keys(dauQuery), function(dates){
                   var values = dauQuery[dates]
