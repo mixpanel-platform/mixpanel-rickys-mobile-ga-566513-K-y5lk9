@@ -75,9 +75,9 @@
             var mauEndDate =  new Date();
             mauEndDate.setDate(d.getDate()-1);
             
-            // console.log("DAU DATE = " + dauDate);
-            // console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
-            // console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
+            console.log("DAU DATE = " + dauDate);
+            console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
+            console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
             
             promisesMAU.push(MP.api.segment(eventName, {
               'type': 'unique',
@@ -107,7 +107,6 @@
             });
           }).then(function(){
             /* Add Data to Graph Data */
-            debugger;
             console.log(dauOutput);
             console.log(mauOutput);
           });
