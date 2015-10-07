@@ -86,7 +86,6 @@
               
               console.log('start!')
               _.each(_.keys(mauQuery), function(dates){
-                console.log(dates)
                 var values = mauQuery[dates];
                 sum = sum + values;
                 if (dates > dauDate) {
@@ -95,9 +94,9 @@
                 console.log(dauDate)
               });
               if (sum == 0) {sum = 1};
-              //console.log(dauDate);
+              console.log(dauDate);
               var finalDauDate = moment(dauDate).add(1, 'days');
-              // console.log(finalDauDate);
+              console.log(finalDauDate);
               mauOutput["Top 10"][finalDauDate] = sum;
             });
           }).then(function(){
