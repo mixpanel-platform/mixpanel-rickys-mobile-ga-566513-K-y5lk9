@@ -39,17 +39,21 @@
           var dateRange = dateSelect.MPDatepicker('value'),
               eventName = 'App Open',
               dates = getDates(),
-              dauOutput = {},
               mauOutput = {};
           
           $('#graph').empty();
           
-          dauOutput["Top 10"] = {};
           mauOutput["Top 10"] = {}
-          console.log(dauOutput);
+          console.log(mauOutput);
           
-          var promisesDAU = [];
           var promisesMAU = [];
+          
+          var params = $.extend({}, dates, {
+              'type': 'unique',
+              'unit': 'day'
+          });
+          
+          var $dau = MP.api.segment()
           
           // Build a list of promises
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
@@ -66,18 +70,8 @@
             // console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
             // console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
             
-            promisesDAU.push(MP.api.segment(eventName, {
-              'type': 'unique',
-              'to': dauDate,
-              'from':  dauDate,
-              'interval': 1}));
-              
-            promisesMAU.push(MP.api.segment(eventName, {
-              'type': 'unique',
-              'to':  moment(mauEndDate).format('YYYY-MM-DD'),
-              'from': moment(mauStartDate).format('YYYY-MM-DD'),
-              'interval': 30}));
-          };
+      
+          
           
           var $dau = Promise.all(promisesDAU).then(function(promiseDauArray){
             _.each(promiseDauArray, function(data){
