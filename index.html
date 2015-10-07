@@ -94,9 +94,21 @@
             console.log(dauOutput);
           });
           
-          // var $mau = Promises.all(promisesMAU).then(function(promiseMauArray){
-            
-          // }
+          var $mau = Promises.all(promisesMAU).then(function(promiseMauArray){
+            _.each(promiseMauArray, function(data){
+              var mauQuery = data.values()[eventName];
+              var sum = 0;
+              _.each(_.keys(mauQuery), function(dates){
+                var values = mauQuery[dates];
+                console.log(dates)
+                sum = sum + values;
+              });
+              if (sum == 0) {sum = 1};
+          }).then(function(){
+            /* Add Data to Graph Data */
+            console.log(mauOutput);
+          });
+          
               
             // // Wait until the segmentation queries finish
             // $.when($dau, $mau).done(function(dau, mau) {
