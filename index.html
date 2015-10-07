@@ -109,9 +109,9 @@
                 var mauValue = dauQuery[date];
                 finalOutput["Top 10"][date] = dauValue/mauValue;
                 
-                console.log(dauValue);
-                console.log(mauValue);
-                console.log(finalOutput);
+                console.log("dauvalue: " + dauValue);
+                console.log("mauvalue: " + mauValue);
+                console.log("finalOutput: " + finalOutput);
               });
             } else {
               _.each(_.keys(mauResults), function(date){
@@ -119,7 +119,7 @@
               });
             };
             // Log and graph results
-            // console.log("Final " + finalOutput)
+            console.log("Final " + finalOutput)
             // eventGraph.MPChart('setData', finalOutput);    
             // console.log(dauOutput);
             // console.log(mauOutput);
