@@ -34,25 +34,13 @@
           return intervalDays
         }
         
-        //add 1 day to string
+        //add 1 day to date of type string
         addOneDay = function(date) {
           transformDate = $.datepicker.parseDate('yy-mm-dd', date);
           transformDate.setDate(transformDate.getDate() + 1)
           finalDate = $.datepicker.formatDate('yy-mm-dd', transformDate);
           return finalDate
         }
-        
-        //add 1 day to string
-        // transformDate = function(date, transformation) {
-        //   transformDate = $.datepicker.parseDate('yy-mm-dd', date);
-        //   if (transformation == '+1day') {
-        //     transformDate.setDate(transformDate.getDate() + 1)
-        //   } else if (transformation == '-31days') {
-        //     transformDate.setDate(transformDate.getDate() - 31)
-        //   }
-        //   finalDate = $.datepicker.formatDate('yy-mm-dd', transformDate);
-        //   return finalDate
-        // }
         
         var runQuery = function() {
           //obtain parameters 
@@ -82,10 +70,10 @@
           // Build a list of promises
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
             var dauDate =  moment(d).format('YYYY-MM-DD')
-            var mauStartDate =  new Date();
-            mauStartDate.setDate(d.getDate()-31);
-            var mauEndDate =  new Date();
-            mauEndDate.setDate(d.getDate()-1);
+            var mauStartDate =  new Date(d);
+            mauStartDate.setDate(mauStartDate.getDate()-31);
+            var mauEndDate =  new Date(d);
+            mauEndDate.setDate(mauEndDate.getDate()-1);
             
             debugger;
             console.log(d);
