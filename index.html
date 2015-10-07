@@ -102,40 +102,40 @@
             console.log(mauOutput);
           });
             
-          // Wait until the segmentation queries finish
-          $.when($dau, $mau).done(function(dau, mau) {
-            var dauQuery = dau.values()[eventName];
-            //var mauQuery = mau.values()[eventName];
+          // // Wait until the segmentation queries finish
+          // $.when($dau, $mau).done(function(dau, mau) {
+          //   var dauQuery = dau.values()[eventName];
+          //   //var mauQuery = mau.values()[eventName];
             
-            if (dauQuery) {
-              // Calculating MAU
-              var sum = 0;
-              _.each(_.keys(mauQuery), function(dates){
-                var values = mauQuery[dates];
-                sum = sum + values;
-              });
-              if (sum == 0) {sum = 1}; 
+          //   if (dauQuery) {
+          //     // Calculating MAU
+          //     var sum = 0;
+          //     _.each(_.keys(mauQuery), function(dates){
+          //       var values = mauQuery[dates];
+          //       sum = sum + values;
+          //     });
+          //     if (sum == 0) {sum = 1}; 
               
-              // Calculating DAU over MAU
-              value = dauQuery[dauDate];
-              finalOutput["Top 10"][dauDate] = value/sum;
-              // console.log(d);
-              // console.log(dauDate);
-              // console.log(finalOutput);
-            } else {
-              finalOutput["Top 10"][dauDate] = 0;
-              // console.log(d);
-              // console.log(dauDate);
-              // console.log(finalOutput);
-            };
+          //     // Calculating DAU over MAU
+          //     value = dauQuery[dauDate];
+          //     finalOutput["Top 10"][dauDate] = value/sum;
+          //     // console.log(d);
+          //     // console.log(dauDate);
+          //     // console.log(finalOutput);
+          //   } else {
+          //     finalOutput["Top 10"][dauDate] = 0;
+          //     // console.log(d);
+          //     // console.log(dauDate);
+          //     // console.log(finalOutput);
+          //   };
             
-            if (d == dates.to) {
-              debugger;
-              // Log and graph results
-              console.log("Final " + finalOutput)
-              eventGraph.MPChart('setData', finalOutput);
-            };
-          });
+          //   if (d == dates.to) {
+          //     debugger;
+          //     // Log and graph results
+          //     console.log("Final " + finalOutput)
+          //     eventGraph.MPChart('setData', finalOutput);
+          //   };
+          // });
               
               
         };
