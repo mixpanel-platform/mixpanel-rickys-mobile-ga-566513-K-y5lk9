@@ -52,8 +52,7 @@
               'type': 'unique',
               'unit': 'day'
           });
-          
-          var $dau = MP.api.segment()
+          var $dau = MP.api.segment(eventName, params);
           
           // Build a list of promises
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
@@ -70,75 +69,80 @@
             // console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
             // console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
             
-      
+            promisesMAU.push(MP.api.segment(eventName, {
+              'type': 'unique',
+              'to':  moment(mauEndDate).format('YYYY-MM-DD'),
+              'from': moment(mauStartDate).format('YYYY-MM-DD'),
+              'interval': 30}));
+          };
           
+          // var $dau = Promise.all(promisesDAU).then(function(promiseDauArray){
+          //   _.each(promiseDauArray, function(data){
+          //     var dauQuery = data.values()[eventName];
+          //     if (dauQuery) {
+          //       _.each(_.keys(dauQuery), function(dates){
+          //         var values = dauQuery[dates]
+          //         dauOutput["Top 10"][dates] = values;
+          //       });
+          //     };
+          //   });
+          // }).then(function(){
+          //   /* Add Data to Graph Data */
+          //   console.log(dauOutput);
+          // });
           
-          var $dau = Promise.all(promisesDAU).then(function(promiseDauArray){
-            _.each(promiseDauArray, function(data){
-              var dauQuery = data.values()[eventName];
-              if (dauQuery) {
-                _.each(_.keys(dauQuery), function(dates){
-                  var values = dauQuery[dates]
-                  dauOutput["Top 10"][dates] = values;
-                });
-              };
-            });
-          }).then(function(){
-            /* Add Data to Graph Data */
-            console.log(dauOutput);
-          });
-          
-          var $mau = Promises.all(promisesMAU).then(function(promiseMauArray){
-            _.each(promiseMauArray, function(data){
-              var mauQuery = data.values()[eventName];
+          var $mau = Promises.all(promisesMAU);
+          // .then(function(promiseMauArray){
+          //   _.each(promiseMauArray, function(data){
+          //     var mauQuery = data.values()[eventName];
+          //     var sum = 0;
+          //     _.each(_.keys(mauQuery), function(dates){
+          //       var values = mauQuery[dates];
+          //       console.log(dates)
+          //       sum = sum + values;
+          //     });
+          //     if (sum == 0) {sum = 1};
+          //   });
+          // }).then(function(){
+          //   /* Add Data to Graph Data */
+          //   console.log(mauOutput);
+          // });
+            
+          // Wait until the segmentation queries finish
+          $.when($dau, $mau).done(function(dau, mau) {
+            var dauQuery = dau.values()[eventName];
+            var mauQuery = mau.values()[eventName];
+            
+            debugger;
+
+            if (dauQuery) {
+              // Calculating MAU
               var sum = 0;
               _.each(_.keys(mauQuery), function(dates){
                 var values = mauQuery[dates];
-                console.log(dates)
                 sum = sum + values;
               });
-              if (sum == 0) {sum = 1};
-            });
-          }).then(function(){
-            /* Add Data to Graph Data */
-            console.log(mauOutput);
-          });
-          
-          
+              if (sum == 0) {sum = 1}; 
               
-            // // Wait until the segmentation queries finish
-            // $.when($dau, $mau).done(function(dau, mau) {
-            //   var dauQuery = dau.values()[eventName];
-            //   var mauQuery = mau.values()[eventName];
-
-            //   if (dauQuery) {
-            //     // Calculating MAU
-            //     var sum = 0;
-            //     _.each(_.keys(mauQuery), function(dates){
-            //       var values = mauQuery[dates];
-            //       sum = sum + values;
-            //     });
-            //     if (sum == 0) {sum = 1}; 
-                
-            //     // Calculating DAU over MAU
-            //     value = dauQuery[dauDate];
-            //     finalOutput["Top 10"][dauDate] = value/sum;
-            //     console.log(d);
-            //     console.log(dauDate);
-            //     console.log(finalOutput);
-            //   } else {
-            //     finalOutput["Top 10"][dauDate] = 0;
-            //     console.log(d);
-            //     console.log(dauDate);
-            //     console.log(finalOutput);
-            //   };
-              
-            //   if (d == dates.to) {
-            //     debugger;
-            //     // Log and graph results
-            //     console.log("Final " + finalOutput)
-            //     eventGraph.MPChart('setData', finalOutput);
-            //   };
+              // Calculating DAU over MAU
+              value = dauQuery[dauDate];
+              finalOutput["Top 10"][dauDate] = value/sum;
+              console.log(d);
+              console.log(dauDate);
+              console.log(finalOutput);
+            } else {
+              finalOutput["Top 10"][dauDate] = 0;
+              console.log(d);
+              console.log(dauDate);
+              console.log(finalOutput);
+            };
+            
+            if (d == dates.to) {
+              debugger;
+              // Log and graph results
+              console.log("Final " + finalOutput)
+              eventGraph.MPChart('setData', finalOutput);
+            };
               
               
         };
