@@ -56,6 +56,7 @@
           
           // Build a list of promises
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
+            console.log(d);
             var dauDate =  moment(d).format('YYYY-MM-DD')
             var mauStartDate =  new Date();
             mauStartDate.setDate(d.getDate()-31);
@@ -85,7 +86,6 @@
               
               _.each(_.keys(mauQuery), function(dates){
                 var values = mauQuery[dates];
-                debugger;
                 sum = sum + values;
                 lastDate = dates;
               });
