@@ -52,7 +52,7 @@
               'type': 'unique',
               'unit': 'day'
           });
-          var $dau = MP.api.segment(eventName, params);
+          var dauOutput = MP.api.segment(eventName, params);
           
           // Build a list of promises
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
