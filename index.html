@@ -34,6 +34,14 @@
           return intervalDays
         }
         
+        //add 1 day to string
+        addOneDay = function(date) {
+          transformDate = $.datepicker.parseDate('yy-mm-dd', date);
+          transformDate.setDate(transformDate.getDate() + 1)
+          finalDate = $.datepicker.formatDate('yy-mm-dd', transformDate);
+          return finalDate
+        }
+        
         var runQuery = function() {
           //obtain parameters 
           var dateRange = dateSelect.MPDatepicker('value'),
@@ -94,7 +102,7 @@
               });
               if (sum == 0) {sum = 1};
               console.log(dauDate);
-              var finalDauDate = moment(dauDate).add(1, 'days');
+              var finalDauDate = addOneDay(dauDate)
               console.log(finalDauDate);
               debugger;
               mauOutput["Top 10"][finalDauDate] = sum;
