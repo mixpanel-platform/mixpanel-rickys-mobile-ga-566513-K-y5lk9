@@ -23,18 +23,18 @@
         var eventGraph  = $('#graph').MPChart({chartType: 'line'});
         var dateSelect  = $('#dateSelect').MPDatepicker();
         
-        //convenience method for grabbing that datepicker value
+        // Convenience method for grabbing that datepicker value
         getDates = function() {
           return dateSelect.MPDatepicker('value')
         }
 
-        //find interval for bar chart 'interval' param
+        // Find interval for bar chart 'interval' param
         getInterval = function(dates) {
           intervalDays = Math.ceil((dates.to - dates.from) / (24 * 60 * 60 * 1000)) + 1
           return intervalDays
         }
         
-        //add 1 day to date of type string
+        // Add 1 day to date of type string
         addOneDay = function(date) {
           transformDate = $.datepicker.parseDate('yy-mm-dd', date);
           transformDate.setDate(transformDate.getDate() + 1)
@@ -43,31 +43,27 @@
         }
         
         var runQuery = function() {
-          //obtain parameters 
+          // Obtain parameters 
           var dateRange = dateSelect.MPDatepicker('value'),
               eventName = 'App Open',
               dates = getDates(),
-              dauOutput = {};
-              mauOutput = {};
+              dauOutput = {},
+              mauOutput = {},
+              promisesMAU = [];
           
           $('#graph').empty();
-          
           mauOutput["Top 10"] = {}
-          console.log(mauOutput);
           
-          var promisesMAU = [];
-          
+          // Query for DAU
           var params = $.extend({}, dates, {
               'type': 'unique',
               'unit': 'day'
           });
           MP.api.segment(eventName, params).done(function(queryResults) {
             dauOutput = queryResults.values();
-            console.log(dauOutput);
           });
             
-          
-          // Build a list of promises
+          // Query for MAU
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
             var dauDate =  moment(d).format('YYYY-MM-DD')
             var mauStartDate =  new Date(d);
@@ -75,26 +71,21 @@
             var mauEndDate =  new Date(d);
             mauEndDate.setDate(mauEndDate.getDate()-1);
             
-            console.log(d);
-            console.log("DAU DATE = " + dauDate);
-            console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
-            console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
-
             promisesMAU.push(MP.api.segment(eventName, {
               'type': 'unique',
               'to':  moment(mauEndDate).format('YYYY-MM-DD'),
               'from': moment(mauStartDate).format('YYYY-MM-DD'),
-              'interval': 30}));
+              'interval': 30
+            }));
           };
           
           var $mau = Promise.all(promisesMAU).then(function(promiseMauArray){
             _.each(promiseMauArray, function(data){
               var mauQuery = data.values()[eventName];
-              
               var zeroDate = new Date(0);
               var dauDate = moment(zeroDate).format('YYYY-MM-DD');
               var sum = 0;
-              
+              // Calculate MAU
               _.each(_.keys(mauQuery), function(dates){
                 var values = mauQuery[dates];
                 sum = sum + values;
@@ -107,7 +98,8 @@
               mauOutput["Top 10"][finalDauDate] = sum;
             });
           }).then(function(){
-            /* Add Data to Graph Data */
+            // Calculate DAU over MAU
+            debugger;
             console.log(dauOutput);
             console.log(mauOutput);
           });
