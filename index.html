@@ -56,7 +56,6 @@
           
           // Build a list of promises
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
-            console.log(d);
             var dauDate =  moment(d).format('YYYY-MM-DD')
             var mauStartDate =  new Date();
             mauStartDate.setDate(d.getDate()-31);
@@ -81,15 +80,21 @@
           var $mau = Promise.all(promisesMAU).then(function(promiseMauArray){
             _.each(promiseMauArray, function(data){
               var mauQuery = data.values()[eventName];
-              var lastDate = new Date();
+              var zeroDate = new Date(0);
+              var dauDate = moment(zeroDate).format('YYYY-MM-DD'),
+              
               var sum = 0;
               
               _.each(_.keys(mauQuery), function(dates){
                 var values = mauQuery[dates];
                 sum = sum + values;
-                lastDate = dates;
+                if (date > dauDate) {
+                  dauDate = date;
+                };
               });
               if (sum == 0) {sum = 1};
+              var finalDauDate = moment(dauDate).add(1, 'days');
+              mauOutput["Top 10"][finalDauDate] = sum;
             });
           }).then(function(){
             /* Add Data to Graph Data */
