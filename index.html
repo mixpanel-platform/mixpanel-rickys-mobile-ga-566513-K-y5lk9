@@ -75,15 +75,11 @@
             var mauEndDate =  new Date(d);
             mauEndDate.setDate(mauEndDate.getDate()-1);
             
-            debugger;
             console.log(d);
-            console.log(d.getDate());
             console.log("DAU DATE = " + dauDate);
             console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
-            console.log(d.getDate()-31);
             console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
-            console.log(d.getDate()-1);
-            
+
             promisesMAU.push(MP.api.segment(eventName, {
               'type': 'unique',
               'to':  moment(mauEndDate).format('YYYY-MM-DD'),
