@@ -42,6 +42,18 @@
           return finalDate
         }
         
+        //add 1 day to string
+        // transformDate = function(date, transformation) {
+        //   transformDate = $.datepicker.parseDate('yy-mm-dd', date);
+        //   if (transformation == '+1day') {
+        //     transformDate.setDate(transformDate.getDate() + 1)
+        //   } else if (transformation == '-31days') {
+        //     transformDate.setDate(transformDate.getDate() - 31)
+        //   }
+        //   finalDate = $.datepicker.formatDate('yy-mm-dd', transformDate);
+        //   return finalDate
+        // }
+        
         var runQuery = function() {
           //obtain parameters 
           var dateRange = dateSelect.MPDatepicker('value'),
@@ -71,15 +83,17 @@
           for (var d = dates.from; d <= dates.to; d.setDate(d.getDate() + 1)) {
             var dauDate =  moment(d).format('YYYY-MM-DD')
             var mauStartDate =  new Date();
-            console.log(d.getDate());
             mauStartDate.setDate(d.getDate()-31);
             var mauEndDate =  new Date();
             mauEndDate.setDate(d.getDate()-1);
 
             console.log(d);
+            console.log(d.getDate());
             console.log("DAU DATE = " + dauDate);
             console.log("MAU DATE Start = " + moment(mauStartDate).format('YYYY-MM-DD'));
+            console.log(d.getDate()-31);
             console.log("MAU DATE End = " + moment(mauEndDate).format('YYYY-MM-DD'));
+            console.log(d.getDate()-1);
             
             promisesMAU.push(MP.api.segment(eventName, {
               'type': 'unique',
