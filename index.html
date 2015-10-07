@@ -105,8 +105,8 @@
             
             if (dauOutput) {
               _.each(_.keys(dauResults), function(date){
-                var dauValue = dauQuery[date];
-                var mauValue = dauQuery[date];
+                var dauValue = dauResults[date];
+                var mauValue = mauResults[date];
                 finalOutput["Top 10"][date] = dauValue/mauValue;
                 
                 console.log("dauvalue: " + dauValue);
