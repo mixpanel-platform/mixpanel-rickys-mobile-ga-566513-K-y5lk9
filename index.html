@@ -94,7 +94,7 @@
               });
               if (sum == 0) {sum = 1};
               console.log(dauDate);
-              var finalDauDate = dauDate.add(1, 'days');
+              var finalDauDate = moment(dauDate).add(1, 'days');
               console.log(finalDauDate);
               debugger;
               mauOutput["Top 10"][finalDauDate] = sum;
