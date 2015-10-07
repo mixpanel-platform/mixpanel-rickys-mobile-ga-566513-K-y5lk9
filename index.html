@@ -75,31 +75,19 @@
               'from': moment(mauStartDate).format('YYYY-MM-DD'),
               'interval': 30}));
           };
-          
-          // var $dau = Promise.all(promisesDAU).then(function(promiseDauArray){
-          //   _.each(promiseDauArray, function(data){
-          //     var dauQuery = data.values()[eventName];
-          //     if (dauQuery) {
-          //       _.each(_.keys(dauQuery), function(dates){
-          //         var values = dauQuery[dates]
-          //         dauOutput["Top 10"][dates] = values;
-          //       });
-          //     };
-          //   });
-          // }).then(function(){
-          //   /* Add Data to Graph Data */
-          //   console.log(dauOutput);
-          // });
+
           
           var $mau = Promise.all(promisesMAU).then(function(promiseMauArray){
             _.each(promiseMauArray, function(data){
               var mauQuery = data.values()[eventName];
-              debugger;
+              var lastDate = new Date();
               var sum = 0;
+              
               _.each(_.keys(mauQuery), function(dates){
                 var values = mauQuery[dates];
-                console.log(dates)
+                debugger;
                 sum = sum + values;
+                lastDate = dates;
               });
               if (sum == 0) {sum = 1};
             });
@@ -113,8 +101,6 @@
             var dauQuery = dau.values()[eventName];
             //var mauQuery = mau.values()[eventName];
             
-            debugger;
-
             if (dauQuery) {
               // Calculating MAU
               var sum = 0;
